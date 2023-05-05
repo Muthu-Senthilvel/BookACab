@@ -31,7 +31,41 @@ const validators = [
     body('lastName').notEmpty().isLength({ min: 1, max: 30 })
 ];
 
-//app.get('/vehicles/')
+app.get('/vehicles/wheels', async (req, res) => {
+    try {
+        const uniqueWheels = await Vehicle.distinct('wheels')
+        return res.status(200).json(uniqueWheels);
+    } catch (err) {
+        console.error(err);
+        return res.status(500).json({ message: 'Error' });
+    }
+});
+
+//app.get('/vehicles/types/{wheels}') => 4=>xuv
+//db.vehicles.distinct('type', { 'wheels': 4 })
+app.get('/vehicles/types/:id', async (req, res) => {
+    try {
+        const { id } = req.params
+        const uniqueType = await Vehicle.distinct('type', { 'wheels': id })
+        return res.status(200).json(uniqueType);
+    } catch (err) {
+        console.error(err);
+        return res.status(500).json({ message: 'Error' });
+    }
+});
+
+//app.get('/vehicles/models/{type}')
+// db.vehicles.distinct('model', {'type': 'sedan'})
+app.get('/vehicles/models/:id', async (req, res) => {
+    try {
+        const { id } = req.params
+        const uniqueModel = await Vehicle.distinct('model', { 'type': id })
+        return res.status(200).json(uniqueModel);
+    } catch (err) {
+        console.error(err);
+        return res.status(500).json({ message: 'Error' });
+    }
+});
 
 
 app.post('/vehicles/bookings', validators, async (req, res) => {
