@@ -31,6 +31,9 @@ const validators = [
     body('lastName').notEmpty().isLength({ min: 1, max: 30 })
 ];
 
+//app.get('/vehicles/')
+
+
 app.post('/vehicles/bookings', validators, async (req, res) => {
     try {
         const errors = validationResult(req);

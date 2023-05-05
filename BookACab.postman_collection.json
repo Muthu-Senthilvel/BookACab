@@ -1,0 +1,39 @@
+{
+	"info": {
+		"_postman_id": "a57bdd15-fdc2-47e0-95da-a32d8e154f18",
+		"name": "BookACab",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "23151961"
+	},
+	"item": [
+		{
+			"name": "http://localhost:3000/vehicles/bookings",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"vehicleId\":14,\r\n    \"firstName\":\"Majah\",\r\n    \"lastName\":\"kumar\",\r\n    \"bookingStartDate\":\"2023-05-10T19:25:43\",\r\n    \"bookingEndDate\":\"2023-05-15T15:25:43\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:3000/vehicles/bookings",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"vehicles",
+						"bookings"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}
