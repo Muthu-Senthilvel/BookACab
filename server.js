@@ -41,12 +41,10 @@ app.get('/vehicles/wheels', async (req, res) => {
     }
 });
 
-//app.get('/vehicles/types/{wheels}') => 4=>xuv
-//db.vehicles.distinct('type', { 'wheels': 4 })
-app.get('/vehicles/types/:id', async (req, res) => {
+app.get('/vehicles/types/:wheels', async (req, res) => {
     try {
-        const { id } = req.params
-        const uniqueType = await Vehicle.distinct('type', { 'wheels': id })
+        const { wheels } = req.params
+        const uniqueType = await Vehicle.distinct('type', { 'wheels': wheels })
         return res.status(200).json(uniqueType);
     } catch (err) {
         console.error(err);
@@ -54,12 +52,10 @@ app.get('/vehicles/types/:id', async (req, res) => {
     }
 });
 
-//app.get('/vehicles/models/{type}')
-// db.vehicles.distinct('model', {'type': 'sedan'})
-app.get('/vehicles/models/:id', async (req, res) => {
+app.get('/vehicles/models/:types', async (req, res) => {
     try {
-        const { id } = req.params
-        const uniqueModel = await Vehicle.distinct('model', { 'type': id })
+        const { types } = req.params
+        const uniqueModel = await Vehicle.distinct('model', { 'type': types })
         return res.status(200).json(uniqueModel);
     } catch (err) {
         console.error(err);
