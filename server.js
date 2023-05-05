@@ -37,7 +37,38 @@ app.post('/vehicles/bookings', validators, async (req, res) => {
         if (!errors.isEmpty()) {
             return res.status(400).json({ errors: errors.array() });
         }
-        console.log('ok');
+
+        const vehicleToBeBooked = await Vehicle.findOne({
+            id: req.body.vehicleId
+        });
+
+        if (!vehicleToBeBooked) {
+            return res.status(400).json({ message: 'Vehicle not found' });
+        }
+        // Make sure there is no olerlapping booking
+        const reqBookingStartDate = new Date(req.body.bookingStartDate);
+        const reqBookingEndDate = new Date(req.body.bookingEndDate);
+
+        vehicleToBeBooked.bookings = vehicleToBeBooked.bookings || [];
+
+        const overlappingBookings = await vehicleToBeBooked.bookings.filter(b =>
+            (reqBookingStartDate >= b.bookingStartDate && reqBookingStartDate <= b.bookingEndDate)
+            || (reqBookingEndDate >= b.bookingStartDate && reqBookingEndDate <= b.bookingEndDate)
+        );
+
+        if (overlappingBookings?.length) {
+            return res.status(400).json({ message: 'Booking date overlaps with another booking. Please select a different date' });
+        }
+
+        vehicleToBeBooked.bookings.push({
+            vehicleId: req.body.vehicleId,
+            bookingStartDate: req.body.bookingStartDate,
+            bookingEndDate: req.body.bookingEndDate,
+            firstName: req.body.firstName,
+            lastName: req.body.lastName
+        });
+        console.log(vehicleToBeBooked);
+        await Vehicle.updateOne({ _id: vehicleToBeBooked._id }, { $set: vehicleToBeBooked })
         return res.status(201).json({ message: 'Booking created successfully' });
     } catch (err) {
         console.error(err);
@@ -47,4 +78,3 @@ app.post('/vehicles/bookings', validators, async (req, res) => {
 app.listen(3000, () => {
     console.log('Server started on port 3000');
 });
-
