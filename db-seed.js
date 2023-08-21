@@ -107,6 +107,13 @@ const allVehicles = [
         type: 'truck',
         image: 'Tata.png'
     },
+    {
+        model: 'Ashok Leyland',
+        id: 15,
+        wheels: 6,
+        type: 'truck',
+        image: 'Leyand.png'
+    },
 ]
 
 Vehicle.insertMany(allVehicles)
@@ -115,4 +122,5 @@ Vehicle.insertMany(allVehicles)
     })
     .catch(err => {
         console.log(err)
-    });
+    })
+

@@ -16,6 +16,10 @@ db.once("open", () => {
 const validators = [
     body('vehicleId').notEmpty().isLength({ min: 1, max: 10 }),
     body('bookingStartDate').notEmpty().toDate().isISO8601().custom((value, { req }) => {
+        const week = new Date(req.body.bookingStartDate)
+        if (week.getDay() === 6 || week.getDay() === 0) {
+            throw new Error('Booking day is in weekend');
+        }
         if (new Date(req.body.bookingStartDate) < new Date()) {
             throw new Error('Booking date must be in the future');
         }
@@ -78,7 +82,6 @@ app.post('/vehicles/bookings', validators, async (req, res) => {
         if (!vehicleToBeBooked) {
             return res.status(400).json({ message: 'Vehicle not found' });
         }
-        // Make sure there is no olerlapping booking
         const reqBookingStartDate = new Date(req.body.bookingStartDate);
         const reqBookingEndDate = new Date(req.body.bookingEndDate);
 
